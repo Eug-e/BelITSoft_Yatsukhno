@@ -2,49 +2,7 @@
 Endpoint - users.
 You need to write CRUD operation tests for testing this endpoint.'''
 
-# class PetstoreUserTests (unittest.TestCase):
 
-    # def Test_CreateUser(self):
-    #     response = requests.post(
-    #         'https://petstore.swagger.io/v2/user/createWithList',
-    #         [
-    #             {
-    #                 "id": 0,
-    #                 "username": "WBA",
-    #                 "firstName": "Tom",
-    #                 "lastName": "Cook",
-    #                 "email": "string@gmail.com",
-    #                 "password": "string",
-    #                 "phone": "103",
-    #                 "userStatus": 0
-    #             },
-    #         ]
-    #     )
-    #     self.assertEqual(response.status_code, 200)
-
-    # def Test_GetUser(self):
-    #     response = requests.get("https://petstore.swagger.io/v2/user/butcher")
-    #     self.assertEqual(response.status_code, 200)
-    #     print('Test GetUser completed')
-
-    # def Test_UpdateUser(self):
-    #     response = requests.put("https://petstore.swagger.io/v2/user/butcher",
-    #                             {
-    #                                 # "id": 0,
-    #                                 "username": "butcher",
-    #                                 "firstName": "vova",
-    #                                 "lastName": "string",
-    #                                 "email": "string@hoo",
-    #                                 "password": "string",
-    #                                 "phone": "string",
-    #                                 "userStatus": 0
-    #                             }
-    #                             )
-    #     self.assertEqual(response.status_code, 200)
-    #     print('Test UpdateUser completed')
-
-# if __name__ == '__main__':
-#     unittest.main()
 
 import requests
 import json
@@ -53,11 +11,21 @@ import unittest
 class TestPetStoreUser(unittest.TestCase):
 
     def payload_create(self):
-        return {"id": "1", "username": "username", "firstName": "firstname", "lastName": "lastName", "email": "string",
-  "password": "string",  "phone": "string"}
+        return {
+            "id": "1", "username": "username", "firstName": "firstname", "lastName": "lastName", "email": "string",
+  "password": "string",  "phone": "string"
+        }
 
-    # def payload_login(self):
-    #     return {"id": "1", "username": "username", "password": "password"}
+    def payload_create_with_list(self):
+        return [
+            {
+                "id": "1", "username": "username", "firstName": "firstname", "lastName": "lastName", "email": "string",
+                "password": "string", "phone": "string"
+            }
+        ]
+
+    def payload_login(self):
+        return {"id": "1", "username": "username", "password": "password"}
 
     def header(self):
         return {'Content-Type': 'application/json'}
@@ -84,19 +52,30 @@ class TestPetStoreUser(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         print('test 4 completed')
 
-    # def test_login_user(self):
-    #         resp = requests.get('https://petstore.swagger.io/v2/user/username', data=json.dumps(self.payload_create()),
-    #                             headers=self.header())
-    #         self.assertEqual(resp.status_code, 200)
-    #
-    # def test_logout_user(self):
-    #     resp = requests.put('https://petstore.swagger.io/v2/user/logout', data=json.dumps(self.payload_login()),
-    #                         headers=self.header())
-    #     self.assertEqual(resp.status_code, 200)
+    def test_5_login_user(self):
+        resp = requests.get('https://petstore.swagger.io/v2/user/login', data=json.dumps(self.payload_login()),
+                            headers=self.header())
+        self.assertEqual(resp.status_code, 200)
+        print('test 5 completed')
 
-    # def test_create_user_with_Array(self):
+    def test_6_logout_user(self):
+        resp = requests.get('https://petstore.swagger.io/v2/user/logout')
+        self.assertEqual(resp.status_code, 200)
+        print('test 6 completed')
 
-    # def test_create_user(self):
+
+    def test_7_create_user_with_list(self):
+        resp = requests.post('https://petstore.swagger.io/v2/user/createWithList', data=json.dumps(self.payload_create_with_list()),
+                             headers=self.header())
+        self.assertEqual(resp.status_code, 200)
+        print('test 7 completed')
+
+    def test_8_create_user_with_array(self):
+        resp = requests.post('https://petstore.swagger.io/v2/user/createWithArray', data=json.dumps(self.payload_create_with_list()),
+                             headers=self.header())
+        self.assertEqual(resp.status_code, 200)
+        print('test 8 completed')
+
 
 if __name__ == '__main__':
     unittest.main()
